@@ -379,10 +379,10 @@ function FrequencyRow({ freq, index, onUpdate, onDelete, analysis }) {
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 20 }}
-      className={`flex items-center gap-3 px-4 py-3 rounded-lg ${statusBg} border border-dark-600`}
+      className={`flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-3 sm:py-3 rounded-lg ${statusBg} border border-dark-600`}
     >
       {/* Type Icon */}
-      <div className={`p-2 rounded-lg ${freq.type === 'mic' ? 'bg-blue-500/20' : 'bg-purple-500/20'}`}>
+      <div className={`p-1.5 sm:p-2 rounded-lg flex-shrink-0 ${freq.type === 'mic' ? 'bg-blue-500/20' : 'bg-purple-500/20'}`}>
         {freq.type === 'mic' ? (
           <Mic className="w-4 h-4 text-blue-400" />
         ) : (
@@ -390,19 +390,20 @@ function FrequencyRow({ freq, index, onUpdate, onDelete, analysis }) {
         )}
       </div>
 
-      {/* Name */}
+      {/* Name - hidden on very small screens, visible on sm+ */}
       <input
         type="text"
         value={freq.name || `${freq.type === 'mic' ? 'Mic' : 'IEM'} ${index + 1}`}
         onChange={(e) => onUpdate(index, { ...freq, name: e.target.value })}
-        className="w-24 bg-transparent border-b border-dark-500 focus:border-blue-500 outline-none px-1"
+        className="hidden sm:block w-20 md:w-24 bg-transparent border-b border-dark-500 focus:border-blue-500 outline-none px-1 text-sm"
       />
 
-      {/* Frequency */}
-      <div className="flex items-center gap-2 flex-1">
+      {/* Frequency - larger tap target on mobile */}
+      <div className="flex items-center gap-2 flex-1 min-w-0">
         {isEditing ? (
           <input
             type="text"
+            inputMode="decimal"
             value={editValue}
             onChange={(e) => setEditValue(e.target.value)}
             onBlur={() => {
@@ -416,20 +417,20 @@ function FrequencyRow({ freq, index, onUpdate, onDelete, analysis }) {
               if (e.key === 'Enter') e.target.blur();
             }}
             autoFocus
-            className="w-24 bg-dark-700 border border-blue-500 rounded px-2 py-1 outline-none text-center font-mono"
+            className="w-full sm:w-24 bg-dark-700 border border-blue-500 rounded px-2 py-2 sm:py-1 outline-none text-center font-mono"
           />
         ) : (
           <button
             onClick={() => setIsEditing(true)}
-            className="font-mono text-lg hover:text-blue-400 transition-colors"
+            className="font-mono text-base sm:text-lg hover:text-blue-400 transition-colors py-1 active:scale-95"
           >
-            {freq.frequency.toFixed(3)} <span className="text-sm text-neutral-500">MHz</span>
+            {freq.frequency.toFixed(3)} <span className="text-xs sm:text-sm text-neutral-500">MHz</span>
           </button>
         )}
       </div>
 
       {/* Status */}
-      <div className={`flex items-center gap-2 ${statusColor}`}>
+      <div className={`flex items-center gap-2 flex-shrink-0 ${statusColor}`}>
         {issue ? (
           <AlertTriangle className="w-4 h-4" />
         ) : warning ? (
@@ -439,10 +440,10 @@ function FrequencyRow({ freq, index, onUpdate, onDelete, analysis }) {
         )}
       </div>
 
-      {/* Delete */}
+      {/* Delete - larger touch target */}
       <button
         onClick={() => onDelete(index)}
-        className="p-2 hover:bg-red-500/20 rounded-lg transition-colors text-neutral-400 hover:text-red-400"
+        className="p-2 sm:p-2 hover:bg-red-500/20 active:bg-red-500/30 rounded-lg transition-colors text-neutral-400 hover:text-red-400 flex-shrink-0"
       >
         <Trash2 className="w-4 h-4" />
       </button>
@@ -459,34 +460,36 @@ function SpectrumVisualization({ frequencies, activeTVChannels, imProducts }) {
   const getPosition = (freq) => ((freq - minFreq) / range) * 100;
 
   return (
-    <div className="bg-dark-800 rounded-xl border border-dark-600 p-4">
-      <div className="flex items-center justify-between mb-4">
+    <div className="bg-dark-800 rounded-xl border border-dark-600 p-3 sm:p-4">
+      {/* Header - stacks on mobile */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 mb-3 sm:mb-4">
         <h3 className="font-medium flex items-center gap-2">
           <Waves className="w-5 h-5 text-blue-400" />
           Spectrum View
         </h3>
-        <div className="flex items-center gap-4 text-xs">
-          <div className="flex items-center gap-1">
-            <div className="w-3 h-3 rounded bg-red-500/30"></div>
-            <span className="text-neutral-400">TV Channels</span>
+        {/* Legend - horizontal scroll on mobile */}
+        <div className="flex items-center gap-3 sm:gap-4 text-xs overflow-x-auto pb-1 sm:pb-0 -mx-1 px-1 sm:mx-0 sm:px-0 scrollbar-hide">
+          <div className="flex items-center gap-1 flex-shrink-0">
+            <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded bg-red-500/30"></div>
+            <span className="text-neutral-400 whitespace-nowrap">TV</span>
           </div>
-          <div className="flex items-center gap-1">
-            <div className="w-3 h-3 rounded bg-blue-500"></div>
-            <span className="text-neutral-400">Mics</span>
+          <div className="flex items-center gap-1 flex-shrink-0">
+            <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded bg-blue-500"></div>
+            <span className="text-neutral-400 whitespace-nowrap">Mics</span>
           </div>
-          <div className="flex items-center gap-1">
-            <div className="w-3 h-3 rounded bg-purple-500"></div>
-            <span className="text-neutral-400">IEMs</span>
+          <div className="flex items-center gap-1 flex-shrink-0">
+            <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded bg-purple-500"></div>
+            <span className="text-neutral-400 whitespace-nowrap">IEMs</span>
           </div>
-          <div className="flex items-center gap-1">
-            <div className="w-3 h-3 rounded bg-yellow-500/50"></div>
-            <span className="text-neutral-400">IM Products</span>
+          <div className="flex items-center gap-1 flex-shrink-0">
+            <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded bg-yellow-500/50"></div>
+            <span className="text-neutral-400 whitespace-nowrap">IM</span>
           </div>
         </div>
       </div>
 
-      {/* Spectrum Bar */}
-      <div className="relative h-24 bg-dark-900 rounded-lg overflow-hidden">
+      {/* Spectrum Bar - taller on mobile for touch */}
+      <div className="relative h-32 sm:h-28 md:h-24 bg-dark-900 rounded-lg overflow-hidden touch-pan-x">
         {/* TV Channel blocks */}
         {activeTVChannels.map((ch) => {
           const channelInfo = CONFIG.tvChannels[ch];
@@ -499,7 +502,7 @@ function SpectrumVisualization({ frequencies, activeTVChannels, imProducts }) {
               className="absolute top-0 bottom-0 tv-channel-block border-l border-r border-red-500/30"
               style={{ left: `${left}%`, width: `${width}%` }}
             >
-              <div className="absolute top-1 left-1/2 -translate-x-1/2 text-xs text-red-400/70">
+              <div className="absolute top-1 left-1/2 -translate-x-1/2 text-[10px] sm:text-xs text-red-400/70">
                 {ch}
               </div>
             </div>
@@ -521,12 +524,12 @@ function SpectrumVisualization({ frequencies, activeTVChannels, imProducts }) {
             key={idx}
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            className={`absolute top-4 bottom-4 w-1 rounded-full ${
+            className={`absolute top-4 bottom-10 sm:bottom-8 w-1.5 sm:w-1 rounded-full ${
               freq.type === 'mic' ? 'bg-blue-500' : 'bg-purple-500'
             } frequency-active`}
             style={{ left: `${getPosition(freq.frequency)}%` }}
           >
-            <div className={`absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs whitespace-nowrap ${
+            <div className={`absolute -bottom-5 sm:-bottom-6 left-1/2 -translate-x-1/2 text-[9px] sm:text-xs whitespace-nowrap ${
               freq.type === 'mic' ? 'text-blue-400' : 'text-purple-400'
             }`}>
               {freq.frequency.toFixed(1)}
@@ -534,12 +537,12 @@ function SpectrumVisualization({ frequencies, activeTVChannels, imProducts }) {
           </motion.div>
         ))}
 
-        {/* Scale markers */}
-        <div className="absolute bottom-0 left-0 right-0 flex justify-between px-2 py-1 text-xs text-neutral-500">
+        {/* Scale markers - fewer labels on mobile */}
+        <div className="absolute bottom-0 left-0 right-0 flex justify-between px-1 sm:px-2 py-1 text-[9px] sm:text-xs text-neutral-500">
           <span>470</span>
-          <span>500</span>
+          <span className="hidden sm:inline">500</span>
           <span>530</span>
-          <span>560</span>
+          <span className="hidden sm:inline">560</span>
           <span>590</span>
           <span>608</span>
         </div>
@@ -844,35 +847,37 @@ export default function App() {
   return (
     <div className="min-h-screen bg-dark-900">
       {/* Header */}
-      <header className="border-b border-dark-700 bg-dark-800/50 backdrop-blur-sm sticky top-0 z-40">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-blue-500/20 rounded-lg">
-              <Radio className="w-6 h-6 text-blue-400" />
+      <header className="border-b border-dark-700 bg-dark-800/50 backdrop-blur-sm sticky top-0 z-40 safe-area-top">
+        <div className="max-w-6xl mx-auto px-3 sm:px-4 py-3 sm:py-4 flex items-center justify-between">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="p-1.5 sm:p-2 bg-blue-500/20 rounded-lg">
+              <Radio className="w-5 h-5 sm:w-6 sm:h-6 text-blue-400" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white">RF Scout</h1>
-              <p className="text-xs text-neutral-500">Wireless Frequency Coordinator</p>
+              <h1 className="text-lg sm:text-xl font-bold text-white">RF Scout</h1>
+              <p className="text-[10px] sm:text-xs text-neutral-500 hidden xs:block">Wireless Frequency Coordinator</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             {frequencies.length > 0 && (
-              <div className="flex items-center gap-2 text-sm">
+              <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
                 {hasIssues ? (
                   <span className="flex items-center gap-1 text-red-400">
                     <AlertTriangle className="w-4 h-4" />
-                    {analysis.issues.length} conflicts
+                    <span className="hidden sm:inline">{analysis.issues.length} conflicts</span>
+                    <span className="sm:hidden">{analysis.issues.length}</span>
                   </span>
                 ) : hasWarnings ? (
                   <span className="flex items-center gap-1 text-yellow-400">
                     <Info className="w-4 h-4" />
-                    {analysis.warnings.length} warnings
+                    <span className="hidden sm:inline">{analysis.warnings.length} warnings</span>
+                    <span className="sm:hidden">{analysis.warnings.length}</span>
                   </span>
                 ) : (
                   <span className="flex items-center gap-1 text-green-400">
                     <Shield className="w-4 h-4" />
-                    All clear
+                    <span className="hidden sm:inline">All clear</span>
                   </span>
                 )}
               </div>
@@ -882,8 +887,8 @@ export default function App() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-6xl mx-auto px-4 py-8">
-        <div className="grid lg:grid-cols-3 gap-6">
+      <main className="max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-6 md:py-8">
+        <div className="grid lg:grid-cols-3 gap-4 sm:gap-6">
           {/* Left Column - Setup */}
           <div className="lg:col-span-1 space-y-6">
             {/* Venue Search */}
@@ -980,30 +985,30 @@ export default function App() {
             />
 
             {/* Frequency Lists */}
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
               {/* Mics */}
-              <div className="bg-dark-800 rounded-xl border border-dark-600 p-4">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-medium flex items-center gap-2">
-                    <Mic className="w-5 h-5 text-blue-400" />
-                    Wireless Mics
-                    <span className="text-sm text-neutral-500">({micFreqs.length})</span>
+              <div className="bg-dark-800 rounded-xl border border-dark-600 p-3 sm:p-4">
+                <div className="flex items-center justify-between mb-3 sm:mb-4">
+                  <h3 className="font-medium flex items-center gap-2 text-sm sm:text-base">
+                    <Mic className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
+                    <span className="hidden xs:inline">Wireless</span> Mics
+                    <span className="text-xs sm:text-sm text-neutral-500">({micFreqs.length})</span>
                   </h3>
                   <button
                     onClick={() => handleAddFrequency('mic')}
-                    className="p-2 bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 rounded-lg transition-colors"
+                    className="p-2 sm:p-2 bg-blue-500/20 hover:bg-blue-500/30 active:bg-blue-500/40 text-blue-400 rounded-lg transition-colors"
                   >
                     <Plus className="w-4 h-4" />
                   </button>
                 </div>
 
-                <div className="space-y-2 max-h-96 overflow-y-auto">
+                <div className="space-y-2 max-h-64 sm:max-h-80 md:max-h-96 overflow-y-auto scroll-container">
                   <AnimatePresence>
                     {micFreqs.length === 0 ? (
-                      <div className="text-center py-8 text-neutral-500">
-                        <Mic className="w-8 h-8 mx-auto mb-2 opacity-50" />
-                        <p>No mic frequencies</p>
-                        <p className="text-sm">Click Calculate or + to add</p>
+                      <div className="text-center py-6 sm:py-8 text-neutral-500">
+                        <Mic className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-2 opacity-50" />
+                        <p className="text-sm sm:text-base">No mic frequencies</p>
+                        <p className="text-xs sm:text-sm">Click Calculate or + to add</p>
                       </div>
                     ) : (
                       micFreqs.map((freq, idx) => (
@@ -1022,28 +1027,28 @@ export default function App() {
               </div>
 
               {/* IEMs */}
-              <div className="bg-dark-800 rounded-xl border border-dark-600 p-4">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-medium flex items-center gap-2">
-                    <Headphones className="w-5 h-5 text-purple-400" />
-                    In-Ear Monitors
-                    <span className="text-sm text-neutral-500">({iemFreqs.length})</span>
+              <div className="bg-dark-800 rounded-xl border border-dark-600 p-3 sm:p-4">
+                <div className="flex items-center justify-between mb-3 sm:mb-4">
+                  <h3 className="font-medium flex items-center gap-2 text-sm sm:text-base">
+                    <Headphones className="w-4 h-4 sm:w-5 sm:h-5 text-purple-400" />
+                    <span className="hidden xs:inline">In-Ear</span> <span className="xs:hidden">IEM</span><span className="hidden xs:inline">Monitors</span>
+                    <span className="text-xs sm:text-sm text-neutral-500">({iemFreqs.length})</span>
                   </h3>
                   <button
                     onClick={() => handleAddFrequency('iem')}
-                    className="p-2 bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 rounded-lg transition-colors"
+                    className="p-2 sm:p-2 bg-purple-500/20 hover:bg-purple-500/30 active:bg-purple-500/40 text-purple-400 rounded-lg transition-colors"
                   >
                     <Plus className="w-4 h-4" />
                   </button>
                 </div>
 
-                <div className="space-y-2 max-h-96 overflow-y-auto">
+                <div className="space-y-2 max-h-64 sm:max-h-80 md:max-h-96 overflow-y-auto scroll-container">
                   <AnimatePresence>
                     {iemFreqs.length === 0 ? (
-                      <div className="text-center py-8 text-neutral-500">
-                        <Headphones className="w-8 h-8 mx-auto mb-2 opacity-50" />
-                        <p>No IEM frequencies</p>
-                        <p className="text-sm">Click Calculate or + to add</p>
+                      <div className="text-center py-6 sm:py-8 text-neutral-500">
+                        <Headphones className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-2 opacity-50" />
+                        <p className="text-sm sm:text-base">No IEM frequencies</p>
+                        <p className="text-xs sm:text-sm">Click Calculate or + to add</p>
                       </div>
                     ) : (
                       iemFreqs.map((freq, idx) => (
@@ -1091,15 +1096,15 @@ export default function App() {
               </motion.div>
             )}
 
-            {/* Help Card */}
-            <div className="bg-dark-800/50 rounded-xl border border-dark-700 p-4">
-              <h3 className="font-medium text-sm text-neutral-400 mb-2">Quick Tips</h3>
-              <ul className="text-sm text-neutral-500 space-y-1">
-                <li>• Mics and IEMs are automatically separated by 4+ MHz to prevent interference</li>
-                <li>• Red TV channel blocks show frequencies occupied by local broadcasters</li>
-                <li>• Yellow lines indicate calculated intermodulation products to avoid</li>
-                <li>• Export to WWB format for direct import into Shure Wireless Workbench</li>
-                <li>• Click any frequency value to manually edit it</li>
+            {/* Help Card - collapsible on mobile */}
+            <div className="bg-dark-800/50 rounded-xl border border-dark-700 p-3 sm:p-4">
+              <h3 className="font-medium text-xs sm:text-sm text-neutral-400 mb-2">Quick Tips</h3>
+              <ul className="text-xs sm:text-sm text-neutral-500 space-y-1">
+                <li className="hidden sm:list-item">• Mics and IEMs are automatically separated by 4+ MHz to prevent interference</li>
+                <li>• Red blocks = TV channels to avoid</li>
+                <li className="hidden sm:list-item">• Yellow lines indicate calculated intermodulation products to avoid</li>
+                <li>• Export to WWB for Shure Wireless Workbench</li>
+                <li>• Tap any frequency to edit it</li>
               </ul>
             </div>
           </div>
@@ -1107,11 +1112,14 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-dark-700 mt-12">
-        <div className="max-w-6xl mx-auto px-4 py-6 text-center text-sm text-neutral-500">
-          <p>RF Scout v{CONFIG.app.version} • Built for touring professionals</p>
-          <p className="mt-1">
+      <footer className="border-t border-dark-700 mt-8 sm:mt-12 safe-area-bottom">
+        <div className="max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-6 text-center text-xs sm:text-sm text-neutral-500">
+          <p>RF Scout v{CONFIG.app.version} • Built for touring pros</p>
+          <p className="mt-1 hidden sm:block">
             Always verify frequencies with an RF scan at the venue • This tool provides recommendations, not guarantees
+          </p>
+          <p className="mt-1 sm:hidden text-[10px]">
+            Always verify with RF scan at venue
           </p>
         </div>
       </footer>

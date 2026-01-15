@@ -4,6 +4,14 @@
 
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  /* Prevent font size adjustment on orientation change */
+  -webkit-text-size-adjust: 100%;
+  /* Smooth scrolling */
+  scroll-behavior: smooth;
 }
 
 body {
@@ -12,25 +20,50 @@ body {
   background-color: #0a0a0a;
   color: #e5e5e5;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  /* Prevent overscroll bounce on iOS */
+  overscroll-behavior: none;
+  /* Safe area for notched devices */
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+/* Ensure inputs don't zoom on iOS (16px minimum) */
+input, select, textarea {
+  font-size: 16px;
 }
 
-::-webkit-scrollbar-track {
-  background: #1a1a1a;
+/* Custom scrollbar - desktop only */
+@media (min-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #1a1a1a;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #404040;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #505050;
+  }
 }
 
-::-webkit-scrollbar-thumb {
-  background: #404040;
-  border-radius: 4px;
-}
+/* Mobile-friendly scrollbar */
+@media (max-width: 767px) {
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #505050;
+  ::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 2px;
+  }
 }
 
 /* Frequency spectrum visualization */
@@ -57,4 +90,112 @@ body {
     transparent 2px,
     transparent 6px
   );
+}
+
+/* Touch-friendly buttons */
+@media (max-width: 767px) {
+  button, .btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Better focus states for accessibility */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Smooth transitions */
+.transition-smooth {
+  transition: all 0.2s ease-out;
+}
+
+/* Mobile spectrum adjustments */
+@media (max-width: 640px) {
+  .spectrum-label {
+    font-size: 9px;
+  }
+}
+
+/* iPad landscape optimizations */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  .spectrum-container {
+    height: 140px;
+  }
+}
+
+/* Prevent text selection on UI elements */
+.no-select {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Active state for touch devices */
+@media (hover: none) {
+  button:active {
+    transform: scale(0.98);
+  }
+}
+
+/* Fix for iOS momentum scrolling */
+.scroll-container {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Status bar color adjustment for full-screen PWA */
+@media (display-mode: standalone) {
+  body {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Hide scrollbar but allow scrolling */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Safe area utilities */
+.safe-area-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Touch action for horizontal panning */
+.touch-pan-x {
+  touch-action: pan-x;
+}
+
+/* Improved touch targets for mobile */
+@media (max-width: 640px) {
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* iPad specific optimizations */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .ipad-grid {
+    grid-template-columns: 1fr 2fr;
+  }
+}
+
+/* Landscape phone optimizations */
+@media (max-height: 500px) and (orientation: landscape) {
+  .landscape-compact {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
 }
