@@ -34,11 +34,14 @@ export default async function handler() {
               boxShadow: '0 0 30px rgba(59, 130, 246, 0.3)',
             }}
           >
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-              <circle cx="12" cy="12" r="4" fill="#3b82f6" />
-              <path d="M12 8 Q16 10 12 12 Q8 14 12 16" stroke="#3b82f6" strokeWidth="2" fill="none" opacity="0.8" />
-              <line x1="12" y1="12" x2="12" y2="4" stroke="#3b82f6" strokeWidth="2" />
-            </svg>
+            <div
+              style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                background: '#3b82f6',
+              }}
+            />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <div style={{ fontSize: '42px', fontWeight: 700, color: '#ffffff', lineHeight: 1 }}>
@@ -71,7 +74,7 @@ export default async function handler() {
               background: 'rgba(59, 130, 246, 0.15)',
               border: '1px solid rgba(59, 130, 246, 0.5)',
               color: '#60a5fa',
-              fontSize: '13px',
+              fontSize: '14px',
               fontWeight: 500,
             }}
           >
@@ -84,7 +87,7 @@ export default async function handler() {
               background: 'rgba(139, 92, 246, 0.15)',
               border: '1px solid rgba(139, 92, 246, 0.5)',
               color: '#a78bfa',
-              fontSize: '13px',
+              fontSize: '14px',
               fontWeight: 500,
             }}
           >
@@ -97,7 +100,7 @@ export default async function handler() {
               background: 'rgba(34, 197, 94, 0.15)',
               border: '1px solid rgba(34, 197, 94, 0.5)',
               color: '#4ade80',
-              fontSize: '13px',
+              fontSize: '14px',
               fontWeight: 500,
             }}
           >
@@ -118,7 +121,7 @@ export default async function handler() {
             position: 'relative',
           }}
         >
-          {/* TV Channel blocks */}
+          {/* TV Channel block 1 */}
           <div
             style={{
               position: 'absolute',
@@ -138,6 +141,8 @@ export default async function handler() {
           >
             TV 16
           </div>
+
+          {/* TV Channel block 2 */}
           <div
             style={{
               position: 'absolute',
@@ -157,6 +162,8 @@ export default async function handler() {
           >
             TV 20
           </div>
+
+          {/* TV Channel block 3 */}
           <div
             style={{
               position: 'absolute',
@@ -177,39 +184,105 @@ export default async function handler() {
             TV 28
           </div>
 
-          {/* Mic frequencies (blue bars) */}
-          {[300, 340, 380, 420].map((left, i) => (
-            <div
-              key={`mic-${i}`}
-              style={{
-                position: 'absolute',
-                left: `${left}px`,
-                top: '30px',
-                width: '6px',
-                height: '120px',
-                background: 'linear-gradient(180deg, #3b82f6, #60a5fa)',
-                borderRadius: '3px',
-                boxShadow: '0 0 15px rgba(59, 130, 246, 0.6)',
-              }}
-            />
-          ))}
+          {/* Mic frequency bars (blue) - explicitly defined */}
+          <div
+            style={{
+              position: 'absolute',
+              left: '300px',
+              top: '30px',
+              width: '6px',
+              height: '120px',
+              background: '#3b82f6',
+              borderRadius: '3px',
+              boxShadow: '0 0 15px rgba(59, 130, 246, 0.6)',
+            }}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              left: '340px',
+              top: '30px',
+              width: '6px',
+              height: '120px',
+              background: '#3b82f6',
+              borderRadius: '3px',
+              boxShadow: '0 0 15px rgba(59, 130, 246, 0.6)',
+            }}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              left: '380px',
+              top: '30px',
+              width: '6px',
+              height: '120px',
+              background: '#3b82f6',
+              borderRadius: '3px',
+              boxShadow: '0 0 15px rgba(59, 130, 246, 0.6)',
+            }}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              left: '420px',
+              top: '30px',
+              width: '6px',
+              height: '120px',
+              background: '#3b82f6',
+              borderRadius: '3px',
+              boxShadow: '0 0 15px rgba(59, 130, 246, 0.6)',
+            }}
+          />
 
-          {/* IEM frequencies (purple bars) */}
-          {[620, 680, 740, 800].map((left, i) => (
-            <div
-              key={`iem-${i}`}
-              style={{
-                position: 'absolute',
-                left: `${left}px`,
-                top: '30px',
-                width: '6px',
-                height: '120px',
-                background: 'linear-gradient(180deg, #8b5cf6, #a78bfa)',
-                borderRadius: '3px',
-                boxShadow: '0 0 15px rgba(139, 92, 246, 0.6)',
-              }}
-            />
-          ))}
+          {/* IEM frequency bars (purple) - explicitly defined */}
+          <div
+            style={{
+              position: 'absolute',
+              left: '620px',
+              top: '30px',
+              width: '6px',
+              height: '120px',
+              background: '#8b5cf6',
+              borderRadius: '3px',
+              boxShadow: '0 0 15px rgba(139, 92, 246, 0.6)',
+            }}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              left: '680px',
+              top: '30px',
+              width: '6px',
+              height: '120px',
+              background: '#8b5cf6',
+              borderRadius: '3px',
+              boxShadow: '0 0 15px rgba(139, 92, 246, 0.6)',
+            }}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              left: '740px',
+              top: '30px',
+              width: '6px',
+              height: '120px',
+              background: '#8b5cf6',
+              borderRadius: '3px',
+              boxShadow: '0 0 15px rgba(139, 92, 246, 0.6)',
+            }}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              left: '800px',
+              top: '30px',
+              width: '6px',
+              height: '120px',
+              background: '#8b5cf6',
+              borderRadius: '3px',
+              boxShadow: '0 0 15px rgba(139, 92, 246, 0.6)',
+            }}
+          />
 
           {/* Scale */}
           <div
@@ -222,7 +295,7 @@ export default async function handler() {
               justifyContent: 'space-between',
               color: '#64748b',
               fontSize: '11px',
-              fontFamily: 'ui-monospace, monospace',
+              fontFamily: 'monospace',
             }}
           >
             <span>470</span>
@@ -260,7 +333,7 @@ export default async function handler() {
           }}
         >
           <span style={{ color: '#475569', fontSize: '14px' }}>Built for touring professionals</span>
-          <span style={{ color: '#64748b', fontSize: '14px', fontFamily: 'ui-monospace, monospace' }}>
+          <span style={{ color: '#64748b', fontSize: '14px', fontFamily: 'monospace' }}>
             rf-scout.vercel.app
           </span>
         </div>
